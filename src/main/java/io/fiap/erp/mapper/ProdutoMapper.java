@@ -40,6 +40,7 @@ public class ProdutoMapper {
         List<ProdutoDTO> dtos = new ArrayList<>();
         for (Produto produto : produtos) {
             ProdutoDTO dto = new ProdutoDTO();
+            dto.setId(produto.getId());
             dto.setDescricao(produto.getDescricao());
             dto.setValorUnitario(produto.getValorUnitario());
             dto.setDataHoraUltimaAtualizacao(produto.getDataHoraUltimaAtualizacao());

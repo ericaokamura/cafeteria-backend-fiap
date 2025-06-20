@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProdutoDTO {
+
+    private Long id;
     private String descricao;
     private Double valorUnitario;
     private LocalDateTime dataHoraUltimaAtualizacao;

@@ -9,7 +9,6 @@ import io.fiap.erp.service.ProdutoService;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("produtos")
 public class ProdutoController {

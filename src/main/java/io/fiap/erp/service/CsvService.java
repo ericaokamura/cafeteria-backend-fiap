@@ -36,6 +36,7 @@ public class CsvService {
 
             for (CSVRecord record : csvRecords) {
                 ProdutoDTO product = new ProdutoDTO(
+                        Long.parseLong(record.get("id")),
                         record.get("descricao"),
                         Double.parseDouble(record.get("valorUnitario")),
                         LocalDateTime.now()

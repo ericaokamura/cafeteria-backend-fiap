@@ -8,7 +8,6 @@ import io.fiap.erp.service.PedidoService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
