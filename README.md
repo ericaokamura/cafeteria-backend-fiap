@@ -1,8 +1,8 @@
 ## Tecnologias utilizadas
 
-#### Java 17
-#### Spring Framework
-#### Lombok
+Java 17
+Spring Framework
+Lombok
 
 
 ## Como rodar a aplicação
