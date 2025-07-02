@@ -30,6 +30,7 @@ public class ProdutoService {
             throw new RuntimeException(); // criar exception customizada
         }
         Produto produto = optionalProduto.get();
+        produto.setNome(produtoDTO.getNome());
         produto.setDescricao(produtoDTO.getDescricao());
         produto.setValorUnitario(produtoDTO.getValorUnitario());
         produto.setDataHoraUltimaAtualizacao(LocalDateTime.now());

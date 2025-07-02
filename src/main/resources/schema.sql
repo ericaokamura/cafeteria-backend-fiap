@@ -9,8 +9,10 @@ create table item_estoque(
 );
 create table produto(
     id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(200),
     descricao VARCHAR(200),
-    valor_unitario VARCHAR(200),
+    tags VARCHAR(200),
+    valor_unitario FLOAT,
     data_hora_ultima_atualizacao DATE
 );
 create table pedido(

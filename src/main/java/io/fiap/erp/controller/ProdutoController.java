@@ -16,7 +16,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<ProdutoDTO> salvarProduto(@RequestBody ProdutoDTO produtoDTO) {
         return ResponseEntity.ok(this.produtoService.salvarProduto(produtoDTO));
     }
@@ -37,7 +37,7 @@ public class ProdutoController {
         return ResponseEntity.ok(this.produtoService.retornarProduto(idProduto));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<ProdutoDTO>> retornarProdutos() {
         return ResponseEntity.ok(this.produtoService.retornarProdutos());
     }

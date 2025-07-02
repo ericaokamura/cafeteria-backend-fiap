@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/csv")
+@RequestMapping("csv")
 public class CsvController {
 
     @Autowired

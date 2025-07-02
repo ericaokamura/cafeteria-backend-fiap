@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 public class ProdutoDTO {
 
     private Long id;
+    private String nome;
     private String descricao;
+    private String tags;
     private Double valorUnitario;
     private LocalDateTime dataHoraUltimaAtualizacao;
 }

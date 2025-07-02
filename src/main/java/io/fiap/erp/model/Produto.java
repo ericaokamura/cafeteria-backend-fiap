@@ -14,7 +14,9 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nome;
     private String descricao;
+    private String tags;
     private Double valorUnitario;
     private LocalDateTime dataHoraUltimaAtualizacao;
 }

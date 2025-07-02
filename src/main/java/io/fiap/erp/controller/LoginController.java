@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("login")
 public class LoginController {
 
     @Autowired
