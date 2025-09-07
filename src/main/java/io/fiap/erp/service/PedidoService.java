@@ -152,4 +152,19 @@ public class PedidoService {
         Pedido pedidoAtualizado = pedidoRepository.save(pedido);
         return PedidoMapper.convertModelToDTO(pedidoAtualizado);
     }
+
+    public List<PedidoDTO> retornarPedidosPorComanda(String comanda) {
+        List<Pedido> pedidos = pedidoRepository.findAllByComanda(comanda);
+        return PedidoMapper.converModelListToDTOList(pedidos);
+    }
+
+    public List<PedidoDTO> retornarPedidosPorMesa(String mesa) {
+        List<Pedido> pedidos = pedidoRepository.findAllByMesa(mesa);
+        return PedidoMapper.converModelListToDTOList(pedidos);
+    }
+
+    public List<PedidoDTO> retornarPedidosPorStatus(String status) {
+        List<Pedido> pedidos = pedidoRepository.findAllByStatus(status);
+        return PedidoMapper.converModelListToDTOList(pedidos);
+    }
 }
