@@ -1,5 +1,6 @@
 package io.fiap.erp.service;
 
+import io.fiap.erp.exception.PedidoNaoExisteException;
 import io.fiap.erp.mapper.ItemPedidoMapper;
 import io.fiap.erp.mapper.PedidoMapper;
 import io.fiap.erp.model.FormaPagamento;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Service
 public class PedidoService {
+
     @Autowired
     private PedidoRepository pedidoRepository;
 
@@ -44,7 +46,7 @@ public class PedidoService {
     public PedidoDTO atualizarPedido(Long idPedido, PedidoDTO pedidoDTO) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         pedido.setStatusPedido(StatusPedido.valueOf(pedidoDTO.getStatusPedido()));
@@ -60,7 +62,7 @@ public class PedidoService {
     public PedidoDTO retornarPedido(Long idPedido) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         return PedidoMapper.convertModelToDTO(pedido);
@@ -86,7 +88,7 @@ public class PedidoService {
     public PedidoDTO finalizarPedido(Long idPedido, String formaPagamento) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         pedido.setStatusPedido(StatusPedido.FINALIZADO);
@@ -111,7 +113,7 @@ public class PedidoService {
     public void inserirItemPedido(Long idPedido, Long idProduto, Long quantidade) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         ItemPedido itemPedido = new ItemPedido(idProduto, idPedido, quantidade);
@@ -121,7 +123,7 @@ public class PedidoService {
     public PedidoDTO cancelarPedido(Long idPedido) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         pedido.setStatusPedido(StatusPedido.CANCELADO);
@@ -132,7 +134,7 @@ public class PedidoService {
     public PedidoDTO enviarPedido(Long idPedido) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         pedido.setStatusPedido(StatusPedido.EM_PREPARO);
@@ -143,7 +145,7 @@ public class PedidoService {
     public PedidoDTO alterarFormaPagamento(Long idPedido, String formaPagamento) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
         Pedido pedido = optionalPedido.get();
         pedido.setFormaPagamento(FormaPagamento.valueOf(formaPagamento));

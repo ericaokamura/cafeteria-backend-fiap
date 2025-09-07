@@ -1,5 +1,7 @@
 package io.fiap.erp.service;
 
+import io.fiap.erp.exception.UsuarioJaExistenteException;
+import io.fiap.erp.exception.UsuarioNaoExisteException;
 import io.fiap.erp.mapper.UsuarioMapper;
 import io.fiap.erp.model.Usuario;
 import io.fiap.erp.model.dto.UsuarioDTO;
@@ -21,7 +23,7 @@ public class CadastroService {
     public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO) {
         Optional<Usuario> optionalUsuario = this.usuarioRepository.findByNomeUsuario(usuarioDTO.getNomeUsuario());
         if(optionalUsuario.isPresent()) {
-            throw new RuntimeException();
+            throw new UsuarioJaExistenteException("Usuário já existe: " + usuarioDTO.getNomeUsuario());
         }
         Usuario usuario = UsuarioMapper.convertDTOToModel(usuarioDTO);
         usuario.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));

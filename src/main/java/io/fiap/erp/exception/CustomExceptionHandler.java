@@ -1,0 +1,34 @@
+package io.fiap.erp.exception;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class CustomExceptionHandler {
+
+    @ExceptionHandler(value = { UsuarioJaExistenteException.class })
+    public ResponseEntity<ErrorDTO> handleUsuarioJaExistenteException(UsuarioJaExistenteException exception) {
+        return ResponseEntity.badRequest().body(new ErrorDTO(400, "Usuário já existe."));
+    }
+
+    @ExceptionHandler(value = { UsuarioNaoExisteException.class })
+    public ResponseEntity<ErrorDTO> handleUsuarioNaoExisteException(UsuarioNaoExisteException exception) {
+        return ResponseEntity.badRequest().body(new ErrorDTO(400, "Usuário não existe."));
+    }
+
+    @ExceptionHandler(value = { PedidoNaoExisteException.class })
+    public ResponseEntity<ErrorDTO> handlePedidoNaoExisteException(PedidoNaoExisteException exception) {
+        return ResponseEntity.badRequest().body(new ErrorDTO(400, "Pedido não existe."));
+    }
+
+    @ExceptionHandler(value = { ProdutoNaoExisteException.class })
+    public ResponseEntity<ErrorDTO> handleProdutoNaoExisteException() {
+        return ResponseEntity.badRequest().body(new ErrorDTO(400, "Produto não existe."));
+    }
+
+    @ExceptionHandler(value = { Exception.class })
+    public ResponseEntity<ErrorDTO> handleException() {
+        return ResponseEntity.internalServerError().body(new ErrorDTO(500, "Erro interno do servidor."));
+    }
+}

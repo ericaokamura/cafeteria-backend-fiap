@@ -1,5 +1,6 @@
 package io.fiap.erp.service;
 
+import io.fiap.erp.exception.ProdutoNaoExisteException;
 import io.fiap.erp.mapper.ProdutoMapper;
 import io.fiap.erp.model.Produto;
 import io.fiap.erp.model.dto.ProdutoDTO;
@@ -27,7 +28,7 @@ public class ProdutoService {
     public ProdutoDTO atualizarProduto(Long idProduto, ProdutoDTO produtoDTO) {
         Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
         if(optionalProduto.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new ProdutoNaoExisteException("Produto não existe. ID: " + idProduto);
         }
         Produto produto = optionalProduto.get();
         produto.setNome(produtoDTO.getNome());
@@ -41,7 +42,7 @@ public class ProdutoService {
     public ProdutoDTO retornarProduto(Long idProduto) {
         Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
         if(optionalProduto.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new ProdutoNaoExisteException("Produto não existe. ID: " + idProduto);
         }
         Produto produto = optionalProduto.get();
         return ProdutoMapper.convertModelToDTO(produto);
@@ -53,7 +54,7 @@ public class ProdutoService {
     public void deletarProduto(Long idProduto) {
         Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
         if(optionalProduto.isEmpty()) {
-            throw new RuntimeException(); // criar exception customizada
+            throw new ProdutoNaoExisteException("Produto não existe. ID: " + idProduto);
         }
         Produto produto = optionalProduto.get();
         produtoRepository.delete(produto);
