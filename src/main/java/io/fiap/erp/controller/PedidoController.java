@@ -73,19 +73,4 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{comanda}")
-    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorComanda(@PathVariable("comanda") String comanda) {
-        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorComanda(comanda));
-    }
-
-    @GetMapping("/{mesa}")
-    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorMesa(@PathVariable("mesa") String mesa) {
-        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorMesa(mesa));
-    }
-
-    @GetMapping("/{status}")
-    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorStatus(@PathVariable("status") String status) {
-        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorStatus(status));
-    }
-
 }

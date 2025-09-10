@@ -9,9 +9,4 @@ import java.util.List;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
-    List<Pedido> findAllByComanda(String comanda);
-
-    List<Pedido> findAllByStatus(String status);
-
-    List<Pedido> findAllByMesa(String mesa);
 }
