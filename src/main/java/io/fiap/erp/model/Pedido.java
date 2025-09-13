@@ -20,5 +20,6 @@ public class Pedido {
     @Enumerated(value = EnumType.STRING)
     private StatusPedido statusPedido;
     private LocalDateTime dataHoraPedido;
+    private String comentarios;
 }
 

@@ -17,6 +17,7 @@ public class PedidoMapper {
         pedido.setMesa(dto.getMesa());
         pedido.setComanda(dto.getComanda());
         pedido.setNomeCliente(dto.getNomeCliente());
+        pedido.setComentarios(dto.getComentarios());
         return pedido;
     }
 
@@ -30,6 +31,7 @@ public class PedidoMapper {
         dto.setComanda(pedido.getComanda());
         dto.setStatusPedido(pedido.getStatusPedido().name());
         dto.setDataHoraPedido(pedido.getDataHoraPedido());
+        dto.setComentarios(pedido.getComentarios());
         return dto;
     }
 
@@ -43,6 +45,7 @@ public class PedidoMapper {
             pedido.setComanda(dto.getComanda());
             pedido.setNomeCliente(dto.getNomeCliente());
             pedido.setStatusPedido(StatusPedido.valueOf(dto.getStatusPedido()));
+            pedido.setComentarios(dto.getComentarios());
             pedidos.add(pedido);
         }
         return pedidos;
@@ -59,6 +62,7 @@ public class PedidoMapper {
             dto.setNomeCliente(pedido.getNomeCliente());
             dto.setStatusPedido(pedido.getStatusPedido().name());
             dto.setDataHoraPedido(pedido.getDataHoraPedido());
+            dto.setComentarios(pedido.getComentarios());
             dtos.add(dto);
         }
         return dtos;

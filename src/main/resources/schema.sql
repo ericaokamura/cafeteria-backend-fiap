@@ -23,7 +23,8 @@ create table pedido(
     comanda INT,
     mesa INT,
     status_pedido VARCHAR(100),
-    data_hora_pedido DATE
+    data_hora_pedido DATE,
+    comentarios VARCHAR(500)
 );
 create table item_pedido(
     id INT PRIMARY KEY AUTO_INCREMENT,

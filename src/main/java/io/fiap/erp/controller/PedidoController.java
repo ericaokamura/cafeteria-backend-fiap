@@ -1,8 +1,11 @@
 package io.fiap.erp.controller;
 
+import io.fiap.erp.model.StatusPedido;
 import io.fiap.erp.model.dto.ItemPedidoDTO;
 import io.fiap.erp.model.dto.PedidoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.fiap.erp.service.PedidoService;
@@ -18,12 +21,17 @@ public class PedidoController {
 
     @PostMapping()
     public ResponseEntity<PedidoDTO> salvarPedido(@RequestBody PedidoDTO pedidoDTO) {
-        return ResponseEntity.ok(this.pedidoService.salvarProduto(pedidoDTO));
+        return ResponseEntity.ok(this.pedidoService.salvarPedido(pedidoDTO));
     }
 
     @PutMapping("/{idPedido}")
     public ResponseEntity<PedidoDTO> atualizarPedido(@PathVariable("idPedido") Long idPedido, @RequestBody PedidoDTO pedidoDTO) {
         return ResponseEntity.ok(this.pedidoService.atualizarPedido(idPedido, pedidoDTO));
+    }
+
+    @PatchMapping("/{idPedido}/comentarios/{comentarios}")
+    public ResponseEntity<PedidoDTO> atualizarComentariosPedido(@PathVariable("idPedido") Long idPedido, @PathVariable("comentarios") String comentarios) {
+        return ResponseEntity.ok(this.pedidoService.atualizarComentarios(idPedido, comentarios));
     }
 
     @PatchMapping("/{idPedido}/alterarFormaPagamento")
@@ -71,6 +79,26 @@ public class PedidoController {
     public ResponseEntity deletarTodosPedidos() {
         this.pedidoService.deletarTodosPedidos();
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/paginacao")
+    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorPagina(@RequestParam("numeroPagina") Integer numeroPagina) {
+        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorPagina(numeroPagina));
+    }
+
+    @GetMapping("/paginacao/comanda")
+    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorComandaEPagina(@RequestParam("comanda") Long comanda, @RequestParam("numeroPagina") Integer numeroPagina) {
+        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorComandaEPagina(comanda, numeroPagina));
+    }
+
+    @GetMapping("/paginacao/mesa")
+    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorMesaEPagina(@RequestParam("mesa") Long mesa, @RequestParam("numeroPagina") Integer numeroPagina) {
+        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorMesaEPagina(mesa, numeroPagina));
+    }
+
+    @GetMapping("/paginacao/statusPedido")
+    public ResponseEntity<List<PedidoDTO>> retornarPedidosPorStatusPedidoEPagina(@RequestParam("statusPedido") String statusPedido, @RequestParam("numeroPagina") Integer numeroPagina) {
+        return ResponseEntity.ok(this.pedidoService.retornarPedidosPorStatusPedidoEPagina(StatusPedido.valueOf(statusPedido), numeroPagina));
     }
 
 }

@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
@@ -30,5 +32,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<ErrorDTO> handleException() {
         return ResponseEntity.internalServerError().body(new ErrorDTO(500, "Erro interno do servidor."));
+    }
+
+    @ExceptionHandler(value = { IOException.class })
+    public ResponseEntity<ErrorDTO> handleIOException() {
+        return ResponseEntity.internalServerError().body(new ErrorDTO(500, "Erro ao exportar relatório."));
     }
 }

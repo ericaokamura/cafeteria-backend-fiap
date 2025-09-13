@@ -16,4 +16,5 @@ public class PedidoDTO {
     private Long mesa;
     private String statusPedido;
     private LocalDateTime dataHoraPedido;
+    private String comentarios;
 }

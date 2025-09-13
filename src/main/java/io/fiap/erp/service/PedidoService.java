@@ -12,6 +12,7 @@ import io.fiap.erp.model.dto.PedidoDTO;
 import io.fiap.erp.repository.ItemPedidoRepository;
 import io.fiap.erp.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
-    public PedidoDTO salvarProduto(PedidoDTO pedidoDTO) {
+    public PedidoDTO salvarPedido(PedidoDTO pedidoDTO) {
         Pedido pedido = PedidoMapper.convertDTOToModel(pedidoDTO);
         pedido.setDataHoraPedido(LocalDateTime.now());
         pedido.setStatusPedido(StatusPedido.INICIADO);
@@ -40,7 +41,9 @@ public class PedidoService {
             item.setIdPedido(pedidoSalvo.getId());
             itemPedidoRepository.save(item);
         });
-        return PedidoMapper.convertModelToDTO(pedidoSalvo);
+        PedidoDTO retorno = PedidoMapper.convertModelToDTO(pedidoSalvo);
+        retorno.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findAllByIdPedido(pedidoSalvo.getId())));
+        return retorno;
     }
 
     public PedidoDTO atualizarPedido(Long idPedido, PedidoDTO pedidoDTO) {
@@ -59,6 +62,17 @@ public class PedidoService {
         return PedidoMapper.convertModelToDTO(pedidoAtualizado);
     }
 
+    public PedidoDTO atualizarComentarios(Long idPedido, String comentario) {
+        Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
+        if(optionalPedido.isEmpty()) {
+            throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
+        }
+        Pedido pedido = optionalPedido.get();
+        pedido.setComentarios(comentario);
+        Pedido pedidoAtualizado = pedidoRepository.save(pedido);
+        return PedidoMapper.convertModelToDTO(pedidoAtualizado);
+    }
+
     public PedidoDTO retornarPedido(Long idPedido) {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(idPedido);
         if(optionalPedido.isEmpty()) {
@@ -70,11 +84,55 @@ public class PedidoService {
 
     public List<PedidoDTO> retornarPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
+        return PedidoMapper.converModelListToDTOList(pedidos);
+    }
+
+    public List<PedidoDTO> retornarPedidosPorPagina(Integer numeroPagina) {
+        Page<Pedido> pedidos = pedidoRepository.findAll(PageRequest.of(numeroPagina, 3, Sort.by(Sort.Direction.ASC, "id")));
+        List<PedidoDTO> dtos = new ArrayList<>();
+        for (Pedido pedido : pedidos.getContent()) {
+            if(!StatusPedido.CANCELADO.equals(pedido.getStatusPedido()) && !StatusPedido.FINALIZADO.equals(pedido.getStatusPedido())) {
+                PedidoDTO dto = PedidoMapper.convertModelToDTO(pedido);
+                dto.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findAllByIdPedido(pedido.getId())));
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
+    public List<PedidoDTO> retornarPedidosPorComandaEPagina(Long comanda, Integer numeroPagina) {
+        List<Pedido> pedidos = pedidoRepository.findAllByComanda(comanda, PageRequest.of(numeroPagina, 3));
         List<PedidoDTO> dtos = new ArrayList<>();
         for (Pedido pedido : pedidos) {
             if(!StatusPedido.CANCELADO.equals(pedido.getStatusPedido()) && !StatusPedido.FINALIZADO.equals(pedido.getStatusPedido())) {
                 PedidoDTO dto = PedidoMapper.convertModelToDTO(pedido);
-                dto.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findByIdPedido(pedido.getId())));
+                dto.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findAllByIdPedido(pedido.getId())));
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
+    public List<PedidoDTO> retornarPedidosPorMesaEPagina(Long mesa, Integer numeroPagina) {
+        List<Pedido> pedidos = pedidoRepository.findAllByMesa(mesa, PageRequest.of(numeroPagina, 3));
+        List<PedidoDTO> dtos = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            if(!StatusPedido.CANCELADO.equals(pedido.getStatusPedido()) && !StatusPedido.FINALIZADO.equals(pedido.getStatusPedido())) {
+                PedidoDTO dto = PedidoMapper.convertModelToDTO(pedido);
+                dto.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findAllByIdPedido(pedido.getId())));
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
+    public List<PedidoDTO> retornarPedidosPorStatusPedidoEPagina(StatusPedido statusPedido, Integer numeroPagina) {
+        List<Pedido> pedidos = pedidoRepository.findAllByStatusPedido(statusPedido, PageRequest.of(numeroPagina, 3));
+        List<PedidoDTO> dtos = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            if(!StatusPedido.CANCELADO.equals(pedido.getStatusPedido()) && !StatusPedido.FINALIZADO.equals(pedido.getStatusPedido())) {
+                PedidoDTO dto = PedidoMapper.convertModelToDTO(pedido);
+                dto.setItensPedido(ItemPedidoMapper.convertModelListToDTOList(itemPedidoRepository.findAllByIdPedido(pedido.getId())));
                 dtos.add(dto);
             }
         }
@@ -100,7 +158,7 @@ public class PedidoService {
 
     public List<ItemPedidoDTO> retornarItensPedido(Long idPedido) {
         List<ItemPedidoDTO> dtos = new ArrayList<>();
-        itemPedidoRepository.findByIdPedido(idPedido).forEach(i -> {
+        itemPedidoRepository.findAllByIdPedido(idPedido).forEach(i -> {
             ItemPedidoDTO dto = new ItemPedidoDTO();
             dto.setIdPedido(i.getIdPedido());
             dto.setIdProduto(i.getIdProduto());
@@ -115,9 +173,8 @@ public class PedidoService {
         if(optionalPedido.isEmpty()) {
             throw new PedidoNaoExisteException("Pedido não existente. ID: " + idPedido);
         }
-        Pedido pedido = optionalPedido.get();
         ItemPedido itemPedido = new ItemPedido(idProduto, idPedido, quantidade);
-        ItemPedido itemPedidoSalvo = itemPedidoRepository.save(itemPedido);
+        itemPedidoRepository.save(itemPedido);
     }
 
     public PedidoDTO cancelarPedido(Long idPedido) {
