@@ -6,17 +6,14 @@ import io.fiap.erp.model.Produto;
 import io.fiap.erp.repository.ItemPedidoRepository;
 import io.fiap.erp.repository.PedidoRepository;
 import io.fiap.erp.repository.ProdutoRepository;
-import org.apache.commons.collections4.bag.SynchronizedSortedBag;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +68,7 @@ public class ReportExporterService {
         } catch (IOException e) {
             System.out.println(e.getMessage());
             workbook.close();
+            return null;
         }
-        return null;
     }
 }

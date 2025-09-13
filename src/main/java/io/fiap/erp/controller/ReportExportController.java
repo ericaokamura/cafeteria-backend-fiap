@@ -1,9 +1,6 @@
 package io.fiap.erp.controller;
 
-import io.fiap.erp.model.dto.UsuarioDTO;
-import io.fiap.erp.service.CadastroService;
 import io.fiap.erp.service.ReportExporterService;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

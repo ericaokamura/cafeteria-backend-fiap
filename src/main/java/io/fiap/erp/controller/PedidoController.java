@@ -4,8 +4,6 @@ import io.fiap.erp.model.StatusPedido;
 import io.fiap.erp.model.dto.ItemPedidoDTO;
 import io.fiap.erp.model.dto.PedidoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.fiap.erp.service.PedidoService;
