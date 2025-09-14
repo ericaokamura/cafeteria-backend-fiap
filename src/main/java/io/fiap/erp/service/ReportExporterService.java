@@ -43,7 +43,7 @@ public class ReportExporterService {
         header.createCell(4).setCellValue("Descrição do Produto");
         header.createCell(5).setCellValue("Valor Unitário do Produto");
         header.createCell(6).setCellValue("Subtotal");
-
+        header.createCell(7).setCellValue("Data/hora do Pedido");
 
         List<Pedido> pedidos = pedidoRepository.findAll();
         final int[] rowNum = {1};
@@ -59,6 +59,7 @@ public class ReportExporterService {
                 row.createCell(4).setCellValue(produto.get().getDescricao());
                 row.createCell(5).setCellValue(produto.get().getValorUnitario());
                 row.createCell(6).setCellValue(i.getQuantidade() * produto.get().getValorUnitario());
+                row.createCell(7).setCellValue(pedido.getDataHoraPedido());
             });
         }
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
