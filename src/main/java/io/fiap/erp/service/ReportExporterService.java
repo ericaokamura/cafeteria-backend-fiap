@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +62,7 @@ public class ReportExporterService {
                 row.createCell(4).setCellValue(produto.get().getDescricao());
                 row.createCell(5).setCellValue(produto.get().getValorUnitario());
                 row.createCell(6).setCellValue(i.getQuantidade() * produto.get().getValorUnitario());
-                row.createCell(7).setCellValue(pedido.getDataHoraPedido());
+                row.createCell(7).setCellValue(pedido.getDataHoraPedido().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             });
         }
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
