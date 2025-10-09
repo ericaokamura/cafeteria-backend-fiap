@@ -12,6 +12,7 @@ public class UsuarioMapper {
         Usuario usuario = new Usuario();
         usuario.setNomeUsuario(dto.getNomeUsuario());
         usuario.setSenha(dto.getSenha());
+        usuario.setCpf(dto.getCpf());
         usuario.setTipoFuncionario(TipoFuncionario.valueOf(dto.getTipoFuncionario()));
         return usuario;
     }
@@ -20,6 +21,7 @@ public class UsuarioMapper {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNomeUsuario(model.getNomeUsuario());
         dto.setSenha(model.getSenha());
+        dto.setCpf(model.getCpf());
         dto.setTipoFuncionario(model.getTipoFuncionario().name());
         return dto;
     }

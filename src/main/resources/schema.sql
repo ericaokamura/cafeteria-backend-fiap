@@ -34,3 +34,17 @@ create table item_pedido(
     FOREIGN KEY(id_produto) references produto(id),
     FOREIGN KEY(id_pedido) references pedido(id)
 );
+create table usuario(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome_usuario VARCHAR(200),
+    senha VARCHAR(200),
+    cpf VARCHAR(11),
+    tipo_funcionario VARCHAR(11),
+    data_hora_cadastro DATE
+);
+create table auditoria_log(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    mensagem_log VARCHAR(200),
+    metodo_http VARCHAR(20),
+    data_hora_auditoria DATE
+);

@@ -19,9 +19,9 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String  nomeUsuario;
     private String senha;
+    private String cpf;
     @Enumerated(value = EnumType.STRING)
     private TipoFuncionario tipoFuncionario;
     private LocalDateTime dataHoraCadastro;

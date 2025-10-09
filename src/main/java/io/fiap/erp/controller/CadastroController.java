@@ -14,7 +14,23 @@ public class CadastroController {
     private CadastroService cadastroService;
 
     @PostMapping("")
-    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO aluno) {
-        return ResponseEntity.ok(cadastroService.cadastrarUsuario(aluno));
+    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO usuario) {
+        return ResponseEntity.ok(cadastroService.cadastrarUsuario(usuario));
+    }
+
+    @GetMapping("/nomeUsuario")
+    public ResponseEntity<UsuarioDTO> retornarUsuario(@RequestParam("nomeUsuario") String nomeUsuario) {
+        return ResponseEntity.ok(cadastroService.retornarUsuario(nomeUsuario));
+    }
+
+    @PutMapping("")
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(@RequestBody UsuarioDTO usuario) {
+        return ResponseEntity.ok(cadastroService.atualizarUsuario(usuario));
+    }
+
+    @DeleteMapping("/nomeUsuario")
+    public ResponseEntity<Void> deletarUsuario(@RequestParam("nomeUsuario") String nomeUsuario) {
+        cadastroService.deletarUsuario(nomeUsuario);
+        return ResponseEntity.ok().build();
     }
 }

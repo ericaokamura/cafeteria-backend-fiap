@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class UsuarioDTO {
     private String nomeUsuario;
     private String senha;
+    private String cpf;
     private String tipoFuncionario;
     private LocalDateTime dataHoraCadastro;
 
