@@ -1,50 +1,60 @@
-create database erp_db;
-use erp_db;
-create table item_estoque(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE item_estoque (
+    id SERIAL PRIMARY KEY,
     descricao VARCHAR(200),
     quantidade_atual INT,
     quantidade_ideal INT,
-    data_hora_ultima_atualizacao DATE
+    data_hora_ultima_atualizacao TIMESTAMP
 );
-create table produto(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE produto (
+    id SERIAL PRIMARY KEY,
     nome VARCHAR(200),
     descricao VARCHAR(200),
     tags VARCHAR(200),
-    valor_unitario FLOAT,
-    data_hora_ultima_atualizacao DATE
+    valor_unitario REAL,
+    data_hora_ultima_atualizacao TIMESTAMP
 );
-create table pedido(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE pedido (
+    id SERIAL PRIMARY KEY,
     forma_pagamento VARCHAR(100),
     pagamento_aprovado BOOLEAN,
     nome_cliente VARCHAR(200),
     comanda INT,
     mesa INT,
     status_pedido VARCHAR(100),
-    data_hora_pedido DATE,
+    data_hora_pedido TIMESTAMP,
     comentarios VARCHAR(500)
 );
-create table item_pedido(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_produto INT references produto(id),
-    id_pedido INT references pedido(id),
+
+CREATE TABLE item_pedido (
+    id SERIAL PRIMARY KEY,
+    id_produto INT NOT NULL,
+    id_pedido INT NOT NULL,
     quantidade INT,
-    FOREIGN KEY(id_produto) references produto(id),
-    FOREIGN KEY(id_pedido) references pedido(id)
+    FOREIGN KEY (id_produto) REFERENCES produto(id),
+    FOREIGN KEY (id_pedido) REFERENCES pedido(id)
 );
-create table usuario(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
     nome_usuario VARCHAR(200),
     senha VARCHAR(200),
     cpf VARCHAR(11),
     tipo_funcionario VARCHAR(11),
-    data_hora_cadastro DATE
+    data_hora_cadastro TIMESTAMP
 );
-create table auditoria_log(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE auditoria_log (
+    id SERIAL PRIMARY KEY,
     mensagem_log VARCHAR(200),
     metodo_http VARCHAR(20),
-    data_hora_auditoria DATE
+    data_hora_auditoria TIMESTAMP
+);
+
+CREATE TABLE vector_store (
+    id UUID PRIMARY KEY,
+    content TEXT,
+    embedding VECTOR(1536),
+    metadata TEXT
 );

@@ -29,6 +29,7 @@ public class CadastroService {
         }
         Usuario usuario = UsuarioMapper.convertDTOToModel(usuarioDTO);
         usuario.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
+        usuario.setDataHoraCadastro(LocalDateTime.now());
         Usuario usuarioSalvo = this.usuarioRepository.save(usuario);
         return UsuarioMapper.convertModelToDTO(usuarioSalvo);
     }
