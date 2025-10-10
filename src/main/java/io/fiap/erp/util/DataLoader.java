@@ -1,9 +1,6 @@
 package io.fiap.erp.util;
 
-import com.pgvector.PGvector;
-import io.fiap.erp.model.Embedding;
 import io.fiap.erp.model.ItemEstoque;
-import io.fiap.erp.repository.EmbeddingRepository;
 import io.fiap.erp.repository.ItemEstoqueRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.document.Document;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,16 +23,14 @@ public class DataLoader {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private ItemEstoqueRepository itemEstoqueRepository;
-    @Autowired
-    private EmbeddingRepository embeddingRepository;
 
     @PostConstruct
     public void init() {
-        int count = 0;
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM vector_store", Integer.class);
         System.out.println("🗃️  Contagem de registros no Vector store = " + count);
 
         if (count == 0) {
-            System.out.println("📥 Carregando dados a partir da tabela item_estoque do banco de dados MySQL...");
+            System.out.println("📥 Carregando dados a partir da tabela item_estoque do banco de dados PostgreSQL...");
 
             List<Document> documentos = carregarItensEstoqueComoDocumentos();
 
