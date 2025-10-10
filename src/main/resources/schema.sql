@@ -52,7 +52,9 @@ CREATE TABLE auditoria_log (
     data_hora_auditoria TIMESTAMP
 );
 
-CREATE TABLE vector_store (
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS vector_store (
     id UUID PRIMARY KEY,
     content TEXT,
     embedding VECTOR(1536),
