@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("api")
 public class ChatAIController {
 
     private final ChatClient chatClient;
@@ -24,9 +25,9 @@ public class ChatAIController {
 
     }
 
-    @GetMapping("/ai/{question}")
+    @PostMapping("/chat")
     @CrossOrigin(value="http://localhost:5173, http://localhost:5174")
-    public String chat(@PathVariable("question") String question) {
+    public String chat(@RequestParam("question") String question) {
 
         List<Document> relevantDocs = pgVectorStore.similaritySearch(question);
 
