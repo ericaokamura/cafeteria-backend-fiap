@@ -1,7 +1,9 @@
 package io.fiap.erp.util;
 
 import io.fiap.erp.model.ItemEstoque;
+import io.fiap.erp.model.Produto;
 import io.fiap.erp.repository.ItemEstoqueRepository;
+import io.fiap.erp.repository.ProdutoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -9,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class DataLoader {
@@ -23,6 +22,8 @@ public class DataLoader {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private ItemEstoqueRepository itemEstoqueRepository;
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @PostConstruct
     public void init() {
@@ -34,12 +35,32 @@ public class DataLoader {
 
             List<Document> documentos = carregarItensEstoqueComoDocumentos();
 
+            documentos.addAll(carregarProdutosPorTags());
+
             vectorStore.add(documentos);
 
             System.out.println("✅ Dados de estoque carregados em vector store.");
         } else {
             System.out.println("✅ O vector store já contém dados.");
         }
+    }
+
+    private List<Document> carregarProdutosPorTags() {
+        List<Document> documents = new ArrayList<>();
+        List<Produto> produtos = produtoRepository.findAll();
+        produtos.forEach(produto -> {
+            String tags = produto.getTags();
+            String descricao = produto.getDescricao();
+            Long id = produto.getId();
+
+            String text = "Produto: " + descricao + "\nTags: " + tags;
+            Map<String, Object> metadata = new HashMap<>();
+            metadata.put("id", id);
+            metadata.put("descricao", descricao);
+            metadata.put("tags", tags);
+            documents.add(new Document(text, metadata));
+        });
+        return documents;
     }
 
     private List<Document> carregarItensEstoqueComoDocumentos() {

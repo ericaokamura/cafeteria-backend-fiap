@@ -29,6 +29,11 @@ public class CustomExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorDTO(400, "Produto não existe."));
     }
 
+    @ExceptionHandler(value = { ProdutosNãoExistentesComTagsException.class })
+    public ResponseEntity<ErrorDTO> handleProdutosNãoExistentesComTagsException() {
+        return ResponseEntity.badRequest().body(new ErrorDTO(400, "Produtos não existentes com as tags informadas."));
+    }
+
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<ErrorDTO> handleException() {
         return ResponseEntity.internalServerError().body(new ErrorDTO(500, "Erro interno do servidor."));

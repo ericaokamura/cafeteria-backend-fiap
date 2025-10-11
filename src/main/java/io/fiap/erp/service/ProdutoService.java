@@ -1,6 +1,7 @@
 package io.fiap.erp.service;
 
 import io.fiap.erp.exception.ProdutoNaoExisteException;
+import io.fiap.erp.exception.ProdutosNãoExistentesComTagsException;
 import io.fiap.erp.mapper.ProdutoMapper;
 import io.fiap.erp.model.Produto;
 import io.fiap.erp.model.dto.ProdutoDTO;
@@ -47,6 +48,7 @@ public class ProdutoService {
         Produto produto = optionalProduto.get();
         return ProdutoMapper.convertModelToDTO(produto);
     }
+
     public List<ProdutoDTO> retornarProdutos() {
         return ProdutoMapper.converModelListToDTOList(produtoRepository.findAll());
     }
@@ -58,5 +60,13 @@ public class ProdutoService {
         }
         Produto produto = optionalProduto.get();
         produtoRepository.delete(produto);
+    }
+
+    public List<ProdutoDTO> retornarProdutosPorTags(String tags) {
+        List<Produto> produtos = produtoRepository.findByTagsContaining(tags);
+        if(produtos.isEmpty()) {
+            throw new ProdutosNãoExistentesComTagsException("Produtos não existentes com as tags informadas: " + tags);
+        }
+        return ProdutoMapper.converModelListToDTOList(produtos);
     }
 }

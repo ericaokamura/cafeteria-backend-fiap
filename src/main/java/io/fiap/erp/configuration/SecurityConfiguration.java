@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "login").permitAll()
                 .requestMatchers(HttpMethod.POST, "cadastro").permitAll()
                 .requestMatchers(HttpMethod.GET, "produtos").permitAll()
+                .requestMatchers(HttpMethod.POST, "api/chat/cardapio").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -41,4 +41,9 @@ public class ProdutoController {
         return ResponseEntity.ok(this.produtoService.retornarProdutos());
     }
 
+    @GetMapping("/tags")
+    public ResponseEntity<List<ProdutoDTO>> retornarProdutosPorTags(@RequestParam("tags") String tags) {
+        return ResponseEntity.ok(this.produtoService.retornarProdutosPorTags(tags));
+    }
+
 }
