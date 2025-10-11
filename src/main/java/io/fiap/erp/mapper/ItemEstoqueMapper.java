@@ -43,6 +43,7 @@ public class ItemEstoqueMapper {
         List<ItemEstoqueDTO> dtos = new ArrayList<>();
         for (ItemEstoque model : models) {
             ItemEstoqueDTO dto = new ItemEstoqueDTO();
+            dto.setId(model.getId());
             dto.setDescricao(model.getDescricao());
             dto.setQuantidadeAtual(model.getQuantidadeAtual());
             dto.setQuantidadeIdeal(model.getQuantidadeIdeal());

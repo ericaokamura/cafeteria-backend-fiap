@@ -15,9 +15,9 @@ public class ItemEstoqueController {
     @Autowired
     private ItemEstoqueService itemEstoqueService;
 
-    @PostMapping
-    public ResponseEntity<ItemEstoqueDTO> salvarItemEstoque(@RequestBody ItemEstoqueDTO itemEstoqueDTO) {
-        return ResponseEntity.ok(this.itemEstoqueService.salvarItemEstoque(itemEstoqueDTO));
+    @PutMapping("/id/{id}")
+    public ResponseEntity<ItemEstoqueDTO> atualizarItemEstoque(@PathVariable("id") Long id, @RequestBody ItemEstoqueDTO itemEstoqueDTO) {
+        return ResponseEntity.ok(this.itemEstoqueService.atualizarItemEstoque(id, itemEstoqueDTO));
     }
 
     @GetMapping("/")
