@@ -18,9 +18,9 @@ public class ReportExportController {
     private ReportExporterService reportExporterService;
 
     @GetMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> exportarRelatorioVendas() throws IOException {
+    public ResponseEntity<byte[]> exportarRelatorioVendas(@RequestParam("dataInicio") String dataInicio, @RequestParam("dataFim") String dataFim) throws IOException {
 
-        byte[] excelFile = reportExporterService.exportarRelatorioVendas();
+        byte[] excelFile = reportExporterService.exportarRelatorioVendas(dataInicio, dataFim);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

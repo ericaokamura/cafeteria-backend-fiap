@@ -16,7 +16,11 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +37,9 @@ public class ReportExporterService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public byte[] exportarRelatorioVendas() throws IOException {
+    public byte[] exportarRelatorioVendas(String dataInicio, String dataFim) throws IOException {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Relatório de Vendas");
@@ -51,19 +57,23 @@ public class ReportExporterService {
         List<Pedido> pedidos = pedidoRepository.findAll();
         final int[] rowNum = {1};
         for (Pedido pedido : pedidos) {
-            List<ItemPedido> itensPedido = itemPedidoRepository.findAllByIdPedido(pedido.getId());
-            itensPedido.forEach(i -> {
-                Optional<Produto> produto = produtoRepository.findById(i.getIdProduto());
-                Row row = sheet.createRow(rowNum[0]++);
-                row.createCell(0).setCellValue(pedido.getId());
-                row.createCell(1).setCellValue(i.getIdProduto());
-                row.createCell(2).setCellValue(i.getQuantidade());
-                row.createCell(3).setCellValue(produto.get().getNome());
-                row.createCell(4).setCellValue(produto.get().getDescricao());
-                row.createCell(5).setCellValue(produto.get().getValorUnitario());
-                row.createCell(6).setCellValue(i.getQuantidade() * produto.get().getValorUnitario());
-                row.createCell(7).setCellValue(pedido.getDataHoraPedido().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            });
+
+            if(pedido.getDataHoraPedido().isAfter(LocalDate.parse(dataInicio, dtf).atTime(0, 0)) && pedido.getDataHoraPedido().isBefore(LocalDate.parse(dataFim, dtf).atTime(23, 59))) {
+                List<ItemPedido> itensPedido = itemPedidoRepository.findAllByIdPedido(pedido.getId());
+
+                itensPedido.forEach(i -> {
+                    Optional<Produto> produto = produtoRepository.findById(i.getIdProduto());
+                    Row row = sheet.createRow(rowNum[0]++);
+                    row.createCell(0).setCellValue(pedido.getId());
+                    row.createCell(1).setCellValue(i.getIdProduto());
+                    row.createCell(2).setCellValue(i.getQuantidade());
+                    row.createCell(3).setCellValue(produto.get().getNome());
+                    row.createCell(4).setCellValue(produto.get().getDescricao());
+                    row.createCell(5).setCellValue(produto.get().getValorUnitario());
+                    row.createCell(6).setCellValue(i.getQuantidade() * produto.get().getValorUnitario());
+                    row.createCell(7).setCellValue(pedido.getDataHoraPedido().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                });
+            }
         }
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             workbook.write(out);
