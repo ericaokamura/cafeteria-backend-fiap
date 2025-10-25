@@ -18,7 +18,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    public void sendBatchLowStockAlert(List<ItemEstoqueDTO> alerts) {
+    public void sendBatchLowStockAlert(List<ItemEstoqueDTO> alerts, String nomeUsuario) {
         StringBuilder body = new StringBuilder();
         body.append("Os seguintes produtos estão com estoque baixo:\n\n");
 
@@ -33,7 +33,7 @@ public class EmailService {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
-        message.setTo("ericcaokamura@gmail.com");
+        message.setTo(nomeUsuario);
         message.setSubject("⚠️ Alerta de Estoque Baixo - " + alerts.size() + " produto(s)");
         message.setText(body.toString());
 
