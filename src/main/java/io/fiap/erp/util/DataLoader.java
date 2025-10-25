@@ -25,24 +25,22 @@ public class DataLoader {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @PostConstruct
-    public void init() {
-        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM vector_store", Integer.class);
-        System.out.println("🗃️  Contagem de registros no Vector store = " + count);
+    public void loadItensEstoqueIntoVectorStore() {
+        System.out.println("📥 Deleteando dados da tabela vector_store do banco de dados PostgreSQL...");
+        jdbcTemplate.execute("DELETE from vector_store");
+        System.out.println("📥 Carregando dados a partir da tabela item_estoque do banco de dados PostgreSQL...");
+        List<Document> documentos = carregarItensEstoqueComoDocumentos();
+        vectorStore.add(documentos);
+        System.out.println("✅ Dados de estoque carregados em vector store.");
+    }
 
-        if (count == 0) {
-            System.out.println("📥 Carregando dados a partir da tabela item_estoque do banco de dados PostgreSQL...");
-
-            List<Document> documentos = carregarItensEstoqueComoDocumentos();
-
-            documentos.addAll(carregarProdutosPorTags());
-
-            vectorStore.add(documentos);
-
-            System.out.println("✅ Dados de estoque carregados em vector store.");
-        } else {
-            System.out.println("✅ O vector store já contém dados.");
-        }
+    public void loadProdutosIntoVectorStore() {
+        System.out.println("📥 Deleteando dados da tabela vector_store do banco de dados PostgreSQL...");
+        jdbcTemplate.execute("DELETE from vector_store");
+        System.out.println("📥 Carregando dados a partir da tabela produtos do banco de dados PostgreSQL...");
+        List<Document> documentos = carregarProdutosPorTags();
+        vectorStore.add(documentos);
+        System.out.println("✅ Dados de estoque carregados em vector store.");
     }
 
     private List<Document> carregarProdutosPorTags() {

@@ -1,5 +1,6 @@
 package io.fiap.erp.controller;
 
+import io.fiap.erp.util.DataLoader;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -17,17 +18,21 @@ public class ChatAIController {
 
     private final PgVectorStore pgVectorStore;
 
-    public ChatAIController(ChatClient.Builder builder, PgVectorStore pgVectorStore) {
+    private final DataLoader dataLoader;
+
+    public ChatAIController(ChatClient.Builder builder, PgVectorStore pgVectorStore, DataLoader dataLoader) {
         this.chatClient = builder
                 .defaultAdvisors(new QuestionAnswerAdvisor(pgVectorStore))
                 .build();
         this.pgVectorStore = pgVectorStore;
-
+        this.dataLoader = dataLoader;
     }
 
     @PostMapping("/chat")
     @CrossOrigin(value="http://localhost:5173, http://localhost:5174")
     public String chat(@RequestParam("question") String question) {
+
+        dataLoader.loadItensEstoqueIntoVectorStore();
 
         List<Document> relevantDocs = pgVectorStore.similaritySearch(question);
 
@@ -60,6 +65,8 @@ public class ChatAIController {
     @PostMapping("/chat/cardapio")
     @CrossOrigin(value="http://localhost:5173, http://localhost:5174")
     public String chatCardapio(@RequestParam("question") String question) {
+
+        dataLoader.loadProdutosIntoVectorStore();
 
         List<Document> relevantDocs = pgVectorStore.similaritySearch(question);
 

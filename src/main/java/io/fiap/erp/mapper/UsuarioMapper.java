@@ -13,6 +13,7 @@ public class UsuarioMapper {
         usuario.setNomeUsuario(dto.getNomeUsuario());
         usuario.setSenha(dto.getSenha());
         usuario.setCpf(dto.getCpf());
+        usuario.setBloqueado(false);
         usuario.setTipoFuncionario(TipoFuncionario.valueOf(dto.getTipoFuncionario()));
         return usuario;
     }

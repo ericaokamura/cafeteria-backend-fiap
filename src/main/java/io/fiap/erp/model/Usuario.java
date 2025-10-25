@@ -22,6 +22,7 @@ public class Usuario implements UserDetails {
     private String  nomeUsuario;
     private String senha;
     private String cpf;
+    private boolean bloqueado = false;
     @Enumerated(value = EnumType.STRING)
     private TipoFuncionario tipoFuncionario;
     private LocalDateTime dataHoraCadastro;

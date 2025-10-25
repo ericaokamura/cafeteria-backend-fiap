@@ -20,6 +20,8 @@ public class AuditoriaLog {
 
     private String metodoHttp;
 
+    private Integer nTentativas;
+
     private LocalDateTime dataHoraAuditoria;
 
 }

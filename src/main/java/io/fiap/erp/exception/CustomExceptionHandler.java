@@ -1,5 +1,6 @@
 package io.fiap.erp.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,6 +38,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = { ItemEstoqueNaoEncontradoException.class })
     public ResponseEntity<ErrorDTO> handleItemEstoqueNaoEncontradoException() {
         return ResponseEntity.badRequest().body(new ErrorDTO(400, "Item de estoque não encontrado."));
+    }
+
+    @ExceptionHandler(value = { UsuarioBloqueadoException.class })
+    public ResponseEntity<ErrorDTO> handleUsuarioBloqueadoException() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO(403, "Usuário com conta bloqueada."));
     }
 
     @ExceptionHandler(value = { Exception.class })

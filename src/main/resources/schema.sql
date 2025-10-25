@@ -41,6 +41,8 @@ CREATE TABLE usuario (
     nome_usuario VARCHAR(200),
     senha VARCHAR(200),
     cpf VARCHAR(11),
+    bloqueado BOOLEAN,
+    email VARCHAR(200),
     tipo_funcionario VARCHAR(11),
     data_hora_cadastro TIMESTAMP
 );
@@ -49,6 +51,7 @@ CREATE TABLE auditoria_log (
     id SERIAL PRIMARY KEY,
     mensagem_log VARCHAR(200),
     metodo_http VARCHAR(20),
+    n_tentativas INT,
     data_hora_auditoria TIMESTAMP
 );
 
