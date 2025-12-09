@@ -14,7 +14,7 @@
 
 ## Repositórios das aplicações frontend
 
-https://github.com/ericaokamura/cafeteria-erp-fiap
-https://github.com/ericaokamura/cafeteria-cardapio-fiap
+- https://github.com/ericaokamura/cafeteria-erp-fiap
+- https://github.com/ericaokamura/cafeteria-cardapio-fiap
 
   
